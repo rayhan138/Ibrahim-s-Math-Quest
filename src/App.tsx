@@ -19,6 +19,33 @@ import {
 
 import correctSound from '/Correct.mp3?url';
 import errorSound from '/Error.mp3?url';
+import img01 from '/01.png';
+import img04 from '/04.png';
+import img05 from '/05.png';
+import img09 from '/09.png';
+import img14 from '/14.png';
+import img15 from '/15.png';
+
+// --- Fraction Component ---
+const Fraction = ({ numerator, denominator }: { numerator: number | string; denominator: number | string }) => (
+  <span className="inline-flex flex-col items-center mx-1 align-middle" style={{ verticalAlign: 'middle' }}>
+    <span className="text-lg md:text-xl font-black leading-none">{numerator}</span>
+    <span className="w-full h-0.5 bg-black my-0.5"></span>
+    <span className="text-lg md:text-xl font-black leading-none">{denominator}</span>
+  </span>
+);
+
+// Helper function to render text with fractions
+const renderTextWithFractions = (text: string) => {
+  const parts = text.split(/(\d+\/\d+)/g);
+  return parts.map((part, index) => {
+    const fractionMatch = part.match(/^(\d+)\/(\d+)$/);
+    if (fractionMatch) {
+      return <Fraction key={index} numerator={fractionMatch[1]} denominator={fractionMatch[2]} />;
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
 
 // --- Types ---
 interface Option {
@@ -65,7 +92,7 @@ const questions: Question[] = [
     id: 1,
     title: "The Water Jar Mystery!",
     text: "Look at the picture of the water in the container. Can you tell how much water is inside, to the closest full liter?",
-    image: "https://storage.googleapis.com/static.ai.studio/wicmo3ytfpqj4dzev4v6av/water_jar_q1.png",
+    image: img01,
     options: [
       { id: "A", text: "4 liters" },
       { id: "B", text: "6 liters" },
@@ -108,6 +135,7 @@ const questions: Question[] = [
     id: 4,
     title: "Area Adventure!",
     text: "A rectangle is 7 units long and 3 units wide. What is the area in square units?",
+    image: img04,
     options: [
       { id: "A", text: "10 square units" },
       { id: "B", text: "14 square units" },
@@ -122,6 +150,7 @@ const questions: Question[] = [
     id: 5,
     title: "Number Line Navigator!",
     text: "On a number line divided into 8 equal parts between 0 and 1, which point represents 3/8?",
+    image: img05,
     options: [
       { id: "A", text: "Point A (1st mark)" },
       { id: "B", text: "Point B (3rd mark)" },
@@ -178,6 +207,7 @@ const questions: Question[] = [
     id: 9,
     title: "Missing Squares!",
     text: "A model has a tall part (6x2) and a short part (3x5). What is the total area?",
+    image: img09,
     options: [
       { id: "A", text: "14 square units" },
       { id: "B", text: "15 square units" },
@@ -248,6 +278,7 @@ const questions: Question[] = [
     id: 14,
     title: "Playground Puzzle!",
     text: "An L-shaped playground has side lengths of 3m, 7m, 9m, and 4m. What is the total area in square meters?",
+    image: img14,
     options: [
       { id: "A", text: "23 square meters" },
       { id: "B", text: "32 square meters" },
@@ -257,6 +288,35 @@ const questions: Question[] = [
     correctAnswer: "C",
     explanation: "To find the area of an L-shape, we 'chop' it into two simple rectangles. Rectangle 1 is 3m wide and 7m long: 3 × 7 = 21. Rectangle 2 is the rest of the shape. Its width is 9m minus the 3m we already used (9 - 3 = 6m), and its length is 4m. So, 6 × 4 = 24. Finally, add the two areas together: 21 + 24 = 45 square meters. You've mastered complex area! Amazing!",
     color: "bg-rose-100 border-rose-400 text-rose-900"
+  },
+  {
+    id: 15,
+    title: "Point P Mystery!",
+    text: "Point P is shown on the number line below. Which fraction is equivalent to the value represented by point P?",
+    image: img15,
+    options: [
+      { id: "A", text: "1/3" },
+      { id: "B", text: "1/4" },
+      { id: "C", text: "3/8" },
+      { id: "D", text: "6/8" }
+    ],
+    correctAnswer: "B",
+    explanation: "Let's solve this step-by-step, Ibrahim! Step 1: Count the total number of segments. Look at the equal spaces between 0 and 1 on the number line. There are 8 equal segments. This means each small tick mark represents 1/8. Step 2: Locate Point P. Starting from 0, count the tick marks until you reach Point P. Point P is on the 2nd mark. Step 3: Determine the fraction. Since Point P is 2 segments away from 0, it represents the fraction 2/8. Step 4: Simplify the fraction. Look for an equivalent fraction in the answer choices. You can simplify 2/8 by dividing both the top (numerator) and bottom (denominator) numbers by 2. So 2÷2 = 1 and 8÷2 = 4, which gives us 1/4. Matching this with the given options, the correct answer is B (1/4). You're a fraction detective!",
+    color: "bg-sky-100 border-sky-400 text-sky-900"
+  },
+  {
+    id: 16,
+    title: "Unit Square Challenge!",
+    text: "How many unit squares are needed to cover a rectangle with an area of 15 square units without any gaps or overlaps?",
+    options: [
+      { id: "A", text: "3" },
+      { id: "B", text: "5" },
+      { id: "C", text: "15" },
+      { id: "D", text: "30" }
+    ],
+    correctAnswer: "C",
+    explanation: "This is a clever question, Ibrahim! Let's think about what 'area' really means. When we say a rectangle has an area of 15 square units, we're actually saying it takes exactly 15 unit squares to fill it up completely! Think of it like this: imagine you have a big rectangle drawn on graph paper. Each small square on the graph paper is 1 unit square. If the rectangle's area is 15 square units, that means if you count all the little squares inside the rectangle, you'll count exactly 15 of them! So the answer is C: 15 unit squares. The area number tells us exactly how many unit squares fit inside! You could arrange them as 3 rows of 5 squares (3 × 5 = 15), or 5 rows of 3 squares (5 × 3 = 15), or even 1 row of 15 squares (1 × 15 = 15). No matter how you arrange them, you need exactly 15 unit squares to cover the rectangle. You're an area expert!",
+    color: "bg-amber-100 border-amber-400 text-amber-900"
   }
 ];
 
@@ -411,7 +471,7 @@ export default function App() {
                   {currentQuestion.title}
                 </h2>
                 <p className="text-lg md:text-xl font-black text-gray-900 leading-tight">
-                  {currentQuestion.text}
+                  {renderTextWithFractions(currentQuestion.text)}
                 </p>
               </div>
 
@@ -420,8 +480,7 @@ export default function App() {
                   <img 
                     src={currentQuestion.image} 
                     alt="Quest visual" 
-                    className="w-full h-auto object-cover max-h-[200px]"
-                    referrerPolicy="no-referrer"
+                    className="w-full h-auto object-contain max-h-[300px]"
                   />
                 </div>
               )}
@@ -455,7 +514,7 @@ export default function App() {
                           </div>
                         )}
                       </div>
-                      <span className="text-base md:text-lg font-black leading-tight">{option.text}</span>
+                      <span className="text-base md:text-lg font-black leading-tight">{renderTextWithFractions(option.text)}</span>
                     </button>
                   );
                 })}
@@ -498,7 +557,7 @@ export default function App() {
                     </div>
                   </div>
                   <p className="text-base md:text-lg font-bold text-gray-800 leading-relaxed">
-                    {currentQuestion.explanation}
+                    {renderTextWithFractions(currentQuestion.explanation)}
                   </p>
                 </motion.div>
               )}
