@@ -467,21 +467,27 @@ export default function App() {
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  className="bg-white border-4 border-black p-5 rounded-[20px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                  className={`border-4 border-black p-6 md:p-8 rounded-[20px] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${
+                    selectedAnswer === currentQuestion.correctAnswer 
+                      ? 'bg-gradient-to-br from-green-100 via-green-50 to-emerald-100' 
+                      : 'bg-gradient-to-br from-orange-100 via-yellow-50 to-amber-100'
+                  }`}
                 >
-                  <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-xl ${selectedAnswer === currentQuestion.correctAnswer ? 'bg-green-100' : 'bg-red-100'}`}>
-                      <Lightbulb className={`w-7 h-7 ${selectedAnswer === currentQuestion.correctAnswer ? 'text-green-600' : 'text-red-600'}`} />
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className={`p-3 rounded-2xl ${selectedAnswer === currentQuestion.correctAnswer ? 'bg-green-500' : 'bg-orange-500'}`}>
+                      <Lightbulb className="w-8 h-8 text-white" />
                     </div>
-                    <div>
-                      <h4 className="font-black text-lg md:text-xl uppercase mb-1 tracking-tight">
-                        {selectedAnswer === currentQuestion.correctAnswer ? "Spot on, Ibrahim!" : "Not quite, but keep going!"}
+                    <div className="flex-1">
+                      <h4 className={`font-black text-xl md:text-2xl uppercase mb-2 tracking-tight ${
+                        selectedAnswer === currentQuestion.correctAnswer ? 'text-green-700' : 'text-orange-700'
+                      }`}>
+                        {selectedAnswer === currentQuestion.correctAnswer ? "🎉 Spot on, Ibrahim!" : "💪 Not quite, but keep going!"}
                       </h4>
-                      <p className="text-base md:text-lg font-black text-gray-700 leading-tight">
-                        {currentQuestion.explanation}
-                      </p>
                     </div>
                   </div>
+                  <p className="text-base md:text-lg font-bold text-gray-800 leading-relaxed">
+                    {currentQuestion.explanation}
+                  </p>
                 </motion.div>
               )}
             </motion.div>
