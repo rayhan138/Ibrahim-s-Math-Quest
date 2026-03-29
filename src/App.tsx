@@ -26,13 +26,13 @@ interface Option {
 // --- Sound Effects ---
 const sounds = {
   click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
-  success: 'https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3',
-  error: 'https://assets.mixkit.co/active_storage/sfx/251/251-preview.mp3'
+  success: '/Sounds/Correct.mp3',
+  error: '/Sounds/Error.mp3'
 };
 
 const playSound = (url: string) => {
   const audio = new Audio(url);
-  audio.volume = 0.4;
+  audio.volume = 0.5;
   audio.play().catch(e => console.log("Audio play blocked", e));
 };
 
@@ -286,7 +286,9 @@ export default function App() {
       setScore(prev => prev + 1);
       playSound(sounds.success);
     } else {
-      playSound(sounds.error);
+      const audio = new Audio(sounds.error);
+      audio.volume = 1.0;
+      audio.play().catch(e => console.log("Audio play blocked", e));
     }
     setShowExplanation(true);
   };
