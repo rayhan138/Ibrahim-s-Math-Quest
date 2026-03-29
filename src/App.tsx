@@ -17,6 +17,9 @@ import {
   BookOpen
 } from 'lucide-react';
 
+import correctSound from '/Correct.mp3?url';
+import errorSound from '/Error.mp3?url';
+
 // --- Types ---
 interface Option {
   id: string;
@@ -24,16 +27,25 @@ interface Option {
 }
 
 // --- Sound Effects ---
-const sounds = {
-  click: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3',
-  success: '/Sounds/Correct.mp3',
-  error: '/Sounds/Error.mp3'
-};
+const correctAudio = new Audio(correctSound);
+const errorAudio = new Audio(errorSound);
+const clickAudio = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
 
-const playSound = (url: string) => {
-  const audio = new Audio(url);
-  audio.volume = 0.5;
-  audio.play().catch(e => console.log("Audio play blocked", e));
+correctAudio.volume = 0.5;
+errorAudio.volume = 1.0;
+clickAudio.volume = 0.4;
+
+// Preload the audio files
+correctAudio.load();
+errorAudio.load();
+clickAudio.load();
+
+const playSound = (audio: HTMLAudioElement) => {
+  console.log('Playing sound:', audio.src);
+  audio.currentTime = 0; // Reset to start
+  audio.play()
+    .then(() => console.log('Sound played successfully'))
+    .catch(e => console.error("Audio play failed:", e, audio.src));
 };
 
 interface Question {
@@ -276,7 +288,7 @@ export default function App() {
 
   const handleOptionClick = (optionId: string) => {
     if (showExplanation) return;
-    playSound(sounds.click);
+    playSound(clickAudio);
     setSelectedAnswer(optionId);
   };
 
@@ -284,17 +296,15 @@ export default function App() {
     if (!selectedAnswer) return;
     if (selectedAnswer === currentQuestion.correctAnswer) {
       setScore(prev => prev + 1);
-      playSound(sounds.success);
+      playSound(correctAudio);
     } else {
-      const audio = new Audio(sounds.error);
-      audio.volume = 1.0;
-      audio.play().catch(e => console.log("Audio play blocked", e));
+      playSound(errorAudio);
     }
     setShowExplanation(true);
   };
 
   const handleNext = () => {
-    playSound(sounds.click);
+    playSound(clickAudio);
     if (currentIndex < questions.length - 1) {
       setDirection(1);
       setCurrentIndex(prev => prev + 1);
@@ -306,7 +316,7 @@ export default function App() {
   };
 
   const handleBack = () => {
-    playSound(sounds.click);
+    playSound(clickAudio);
     if (currentIndex > 0) {
       setDirection(-1);
       setCurrentIndex(prev => prev - 1);
@@ -316,7 +326,7 @@ export default function App() {
   };
 
   const resetQuiz = () => {
-    playSound(sounds.click);
+    playSound(clickAudio);
     setCurrentIndex(0);
     setSelectedAnswer(null);
     setShowExplanation(false);
